@@ -60,8 +60,8 @@ struct FontTest : public Argon::Node {
         std::stringstream str;
         Argon::Vector2f pos(input[Argon::kInputIDMouseX].value,input[Argon::kInputIDMouseY].value);
         if(l_cent.overlaps_screen_coord(pos)){
-            l_cent.scale=Vector3f(2.,2,2);
-        }else  l_cent.scale=Vector3f(1.,1,1);
+            l_cent.scale.set(2.,2,2);
+        }else  l_cent.scale.set(1.,1,1);
         str<<"Battery has "<<input[Argon::kInputIDBatteryPercent].value<< " % remaining";
 
         battery_percent.render_str(str.str().c_str(), font,Argon::kLineCenter);
@@ -78,7 +78,7 @@ struct FontTest : public Argon::Node {
 
         total_time+=dt;
 
-        scale.setConstant(input[Argon::kInputIDUp].integral-input[Argon::kInputIDDown].integral+1);
+        scale.set_all(input[Argon::kInputIDUp].integral-input[Argon::kInputIDDown].integral+1);
         return input[' '].value? std::make_shared<NortonCodes>():nullptr;
     }
 

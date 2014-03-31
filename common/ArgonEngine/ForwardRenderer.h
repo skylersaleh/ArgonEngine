@@ -102,9 +102,9 @@ namespace Argon {
             int x=0;
             while(current_light&&x<32) {
                 Vector4f p=current_light->world_matrix()*Vector4f(0,0,0,1.);
-                light_positions[x].head<3>()= Array3f(p.head<3>())/p[3];
+                light_positions[x]=p/p[3];
                 light_positions[x][3]=current_light->distance;
-                light_colors[x].head<3>()= (current_light->color).head<3>();
+                light_colors[x]= (current_light->color);
                 light_colors[x][3]=current_light->specular_power*0.5f;
                 ++x;
 
@@ -123,14 +123,15 @@ namespace Argon {
             projection_matrix=Camera::get_main_camera()->projection_matrix;
 
             Matrix4f proj_view =projection_matrix*view_matrix;
-            Matrix4f inv_c=view_matrix.inverse();
+            Matrix4f inv_c;
+            view_matrix.inverse(inv_c);
 
             Frustrum f;
             f.extract_from_matrix(proj_view);
 
-            renderer_uniforms.get_mat4("view_normal")=inv_c.transpose();
+            renderer_uniforms.get_mat4("view_normal")=transpose(inv_c);
             Vector4f v1 =inv_c*Vector4f(0.,0.,0.,1.);
-            camera_pos=v1.head<3>()/v1[3];
+            camera_pos=v1/v1[3];
 
             frame_time+=timer.delta_time();
 
@@ -142,7 +143,7 @@ namespace Argon {
             size_t bounds_count=0;
             while(b_it){
                 if(b_it->parent){
-                    BoundingCube c = b_it->parent->bounds.transform(b_it->parent->world_matrix().matrix());
+                    BoundingCube c = b_it->parent->bounds.transform(b_it->parent->world_matrix());
                     if(bounds_count>=bounds.size()){
                         std::shared_ptr<BoundingCubeNode> n=std::make_shared<BoundingCubeNode>();;
                         bounds.push_back(n);

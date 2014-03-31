@@ -295,7 +295,7 @@ void OpenGLES::cache_material(Material& state, const VirtualResource&  shader){
     std::vector<B> temp;\
     temp.reserve(it2->second.size());\
     for(auto &i :it2->second)\
-    temp.push_back(i.cast<D>());\
+    temp.push_back(B(i));\
     C (it->second.uniform,(GLsizei)std::min(temp.size(),it->second.size),(D*)&(temp[0]));\
     break;\
 }\

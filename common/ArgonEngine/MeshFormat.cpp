@@ -24,28 +24,27 @@ namespace Argon{
 
         BoundingCube b;
 
-        Affine3f m =Affine3f(d->matrix);
+        Matrix4f m =Matrix4f(d->matrix);
 
         Quaternionf q;
-        q= m.rotation();
-        q.normalize();
-        Affine3f m2 ;
-        m2= m*q.inverse();
+        q= get_rotation(m);
+        q=normalize(q);
+        Matrix4f m2 ;
+        m2= m*RotateMatrix(q.inverse());
         Matrix3f scale_m;
         Matrix3f rot_m;
-        m2.computeRotationScaling(&rot_m,&scale_m);
+        Vector3f s = get_scale(m2);
+        Vector3f scale_v=s;
 
-        Matrix3f s = rot_m*scale_m;
-        Vector3f scale_v=s.diagonal();
-
-        Affine3f m3;
+        Matrix4f m3;
         m3=m2;
-        Vector3f pos_v=m3.translation();
+
+        Vector3f pos_v=get_position(m3);
         anchor=Vector3f(0,0,0);
         position=pos_v;
         dimensions=scale_v;
         //rotation.setIdentity();
-        rotation=q.normalized();
+        rotation=q;
         if(d->materials.size())
         material = file->materials[d->materials[0]];
         color = material?material->color:kWhiteColor;
@@ -61,14 +60,9 @@ namespace Argon{
         Light::specular_power= Light::diffuse_power=d->intensity;
         Light::distance=d->distance;
         color=d->color;
-        Affine3f m2=Affine3f(data->matrix);
-        position=m2.translation();
-        Matrix3f scale_m;
-        Matrix3f rot_m;
-        m2.computeRotationScaling(&rot_m,&scale_m);
-        Matrix3f s = rot_m*scale_m;
-        Vector3f scale_v=s.diagonal();
-        dimensions=scale_v;
+        Matrix4f m2=Matrix4f(data->matrix);
+        position=get_position(m2);
+
     }
     void MeshFormat::load_file(VirtualResource p)
     {

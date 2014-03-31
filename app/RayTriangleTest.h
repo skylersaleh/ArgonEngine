@@ -30,7 +30,7 @@ struct RayTriangleTest : public Argon::Node {
         resolution=100;
         sprite.texture ="virtual://raytri/render_image1.tex{w=h=100; f=RGBA8; mip=0; filter=0;}";
         image = sprite.texture.get_data<Argon::VirtualResourceImage*>();
-        sprite.dimensions=Vector3f(20,20.,20.);
+        sprite.dimensions.set(20,20.,20.);
 
         for(int i=0;i<resolution*resolution*4;i+=4)
             image->set_pixel_color(i%resolution, i/resolution, Argon::kBlackColor);

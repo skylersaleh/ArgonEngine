@@ -20,7 +20,7 @@
             name="NortonCodes";
             sprite.texture="virtual://stream2/render_image3.tex{w=h=256; f=RGBA8; mip=0; filter=0;}";
             image = sprite.texture.get_data<Argon::VirtualResourceImage*>();
-            sprite.dimensions=Vector3f(20,20.,0.);
+            sprite.dimensions.set(20,20.,0.);
         }
 
         std::shared_ptr<Node> animate(float time){

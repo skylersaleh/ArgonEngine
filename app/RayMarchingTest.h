@@ -20,7 +20,7 @@ struct RayMarchingTest : public Argon::Node {
     RayMarchingTest(){
         name="Ray March Test";
         sprite.set_shader("shader://raymarch.shd");
-        sprite.dimensions=Vector3f(20,20.,0.);
+        sprite.dimensions.set(20,20.,0.);
     }
     std::shared_ptr<Node> animate(float time){
         scale =input[Argon::kInputIDMouseY].value+1.;

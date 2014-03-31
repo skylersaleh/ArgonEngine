@@ -23,7 +23,7 @@ namespace Argon {
         return true;
     }
     void BoundingCube::add_point_to_bounds(const VectorBase<float,3>& point){
-        if(size[0]==-1.){origin=point;size.setZero(); return;}
+        if(size[0]==-1.){origin=point;size.set_all(0); return;}
 
         const Vector3f t = point-origin;
         if(t[0]<0.0f) {size[0] -= t[0]; origin[0] = point[0]; }
@@ -50,7 +50,7 @@ namespace Argon {
 
     BoundingCube BoundingCube::transform(const Matrix4f &aff){
         BoundingCube cube;
-        Matrix4f m = aff.matrix();
+        Matrix4f m = aff;
         Vector4f     a(origin[0],origin[1],origin[2],1.);
         Vector4f     b(origin[0]+size[0],origin[1],origin[2],1.);
         Vector4f     c(origin[0]+size[0],origin[1] + size[1],origin[2],1.);
@@ -61,14 +61,14 @@ namespace Argon {
         Vector4f     g(origin[0]+size[0],origin[1] + size[1],origin[2]+size[2],1.);
         Vector4f     h(origin[0],origin[1]+size[1],origin[2]+size[2],1.);
 
-        cube.add_point_to_bounds((m*a).head<3>());
-        cube.add_point_to_bounds((m*b).head<3>());
-        cube.add_point_to_bounds((m*c).head<3>());
-        cube.add_point_to_bounds((m*d).head<3>());
-        cube.add_point_to_bounds((m*e).head<3>());
-        cube.add_point_to_bounds((m*f).head<3>());
-        cube.add_point_to_bounds((m*g).head<3>());
-        cube.add_point_to_bounds((m*h).head<3>());
+        cube.add_point_to_bounds((m*a));
+        cube.add_point_to_bounds((m*b));
+        cube.add_point_to_bounds((m*c));
+        cube.add_point_to_bounds((m*d));
+        cube.add_point_to_bounds((m*e));
+        cube.add_point_to_bounds((m*f));
+        cube.add_point_to_bounds((m*g));
+        cube.add_point_to_bounds((m*h));
 
         return cube;
     } // transform

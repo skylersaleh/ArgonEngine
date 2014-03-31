@@ -52,13 +52,13 @@ namespace Argon
         void reinit(Particle& p){
             allowed_spawn-=1.0;
             p=initial;
-            p.color+=variance.color.cwiseProduct(random_vector<float,4>());
-            p.color_v+=variance.color_v.cwiseProduct(random_vector<float,4>());
+            p.color+=variance.color*(random_vector<float,4>());
+            p.color_v+=variance.color_v*(random_vector<float,4>());
             p.scale+=variance.scale*((rand()%10000)-5000)/5000.f;
             p.scale_v+=variance.scale_v*((rand()%10000)-5000)/5000.f;
-            p.velocity+=variance.velocity.cwiseProduct(random_vector<float,3>());
-            p.position+=variance.position.cwiseProduct(random_vector<float,3>());
-            p.rotation_axis+=variance.rotation_axis.cwiseProduct(random_vector<float,3>());
+            p.velocity+=variance.velocity*(random_vector<float,3>());
+            p.position+=variance.position*(random_vector<float,3>());
+            p.rotation_axis+=variance.rotation_axis*(random_vector<float,3>());
             p.rotation_axis=normalize(p.rotation_axis);
             p.angular_velocity+=variance.angular_velocity*((rand()%10000)-5000)/5000.f;
             p.angle*=variance.angle*(((rand()%10000)-5000)/5000.f);

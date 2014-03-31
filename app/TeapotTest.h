@@ -22,15 +22,16 @@ struct TeapotTest : public Argon::Node {
         std::shared_ptr<Argon::Material> m =teapot.get_material(teapot.get_object_data("teapot").materials[0]);
         m->uniform.get_texture("texture")="resource://metal.png";
         m->shader="shader://metal.shd";
-        m->color=Vector4f(0.2,0.2,0.2,1.);
+        m->color.set(0.2,0.2,0.2,1.);
 
     }
     std::shared_ptr<Node> animate(float time){
         Argon::Vector4f pos(input[Argon::kInputIDMouseX].value,
                      input[Argon::kInputIDMouseY].value,0.8+input[Argon::kInputIDUp].integral*0.1-input[Argon::kInputIDDown].integral*0.1,1.);
-        Argon::Matrix4f i=Argon::Camera::get_main_camera()->matrix.inverse();
+        Argon::Matrix4f i;
+        Argon::Camera::get_main_camera()->matrix.inverse(i);
         pos = i*pos;
-        lamp->position=(pos/pos[3]).head<3>();
+        lamp->position=(pos/pos[3]);
         return input[' '].value?std::make_shared<ArgonAppBase>():nullptr;
 
     }

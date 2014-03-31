@@ -198,14 +198,14 @@ namespace Argon{
             return IterHelper(*this);
         }
         //! Sets the current vertex's value to a vector.
-        template <typename T,int comps>  inline void set(const VectorBase<T,comps>&v){
+        template <typename T,size_t comps>  inline void set(const VectorBase<T,comps>&v){
             size_t min = attr->components<comps? attr->components:comps;
             float*d=(float*)data;
             if(attr->type== kRenderTypeFloat)while(min--) d[min]=v[min];
             else for(size_t x = 0; x<min; ++x) attr->from_float(data,x,v[x]);
         }
         //! Returns true if the current vertex's value is less the vector 'v'.
-        template <typename T,int comps> bool less(const VectorBase<T,comps>&v){
+        template <typename T,size_t comps> bool less(const VectorBase<T,comps>&v){
             for(size_t x = 0; x<attr->components&&x<comps; ++x) {
                 float f = attr->to_float(data,x);
                 if(f!=v[x]) return f<v[x];
@@ -213,22 +213,22 @@ namespace Argon{
             return false;
         }
         //! Returns true if the current vertex's value is equal to the vector 'v'.
-        template <typename T,int comps> bool equals(const VectorBase<T,comps>&v){
+        template <typename T,size_t comps> bool equals(const VectorBase<T,comps>&v){
             for(size_t x = 0; x<attr->components&&x<comps; ++x) {if(attr->to_float(data,x)!=v[x]) return true; }
             return true;
         }
         //! Adds a matrix to the vertex's values.
-        template <typename T,int comps>  IterHelper add(const MatrixBase<T,comps>&v){
+        template <typename T,size_t comps>  IterHelper add(const MatrixBase<T,comps>&v){
             for(size_t x = 0; x<attr->components&&x<comps * comps; ++x) attr->from_float(data,x, attr->to_float(data,x) + v[x]);
             return IterHelper(*this);
         }
         //! Sets the current vertex's values to the matrix 'v'.
-        template <typename T,int comps> inline void set(const MatrixBase<T,comps>&v){
+        template <typename T,size_t comps> inline void set(const MatrixBase<T,comps>&v){
 
             for(size_t x = 0; x<attr->components&&x<comps * comps; ++x) attr->from_float(data,x,v[x]);
         }
         //! Returns true if the current vertex's values are less than matrix 'v'.
-        template <typename T,int comps> bool less(const MatrixBase<T,comps>&v){
+        template <typename T,size_t comps> bool less(const MatrixBase<T,comps>&v){
             for(size_t x = 0; x<attr->components&&x<comps * comps; ++x) {
                 float f = attr->to_float(data,x);
                 if(f!=v[x]) return f<v[x];
@@ -236,16 +236,16 @@ namespace Argon{
             return false;
         }
         //! Returns true if the current vertex's values are equal to the matrix 'v'.
-        template <typename T,int comps> bool equals(const MatrixBase<T,comps>&v){
+        template <typename T,size_t comps> bool equals(const MatrixBase<T,comps>&v){
             for(size_t x = 0; x<attr->components&&x<comps * comps; ++x) {if(attr->to_float(data,x)!=v[x]) return true; }
             return true;
         }
         //! Gets the values of the current vertex in matrix 'v'.
-        template <typename T,int comps> void get(MatrixBase<T,comps>&v){
+        template <typename T,size_t comps> void get(MatrixBase<T,comps>&v){
             for(size_t x = 0; x<attr->components&&x<comps * comps; ++x) v[x] = attr->to_float(data,x);
         }
         //! Gets the values of the current vertex in vector 'v'
-        template <typename T,int comps> void get(VectorBase<T,comps>&v){
+        template <typename T,size_t comps> void get(VectorBase<T,comps>&v){
             size_t x = attr->components<comps ? attr->components : comps;
             while(x--) v[x] = attr->to_float(data,x);
         }
