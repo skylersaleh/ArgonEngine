@@ -97,7 +97,7 @@ void ArgonAppFlowControl::animate(){
     input[Argon::kInputIDJoyButton9].integral=0;
     //Argon::Vector3f translate;
     translate+=q.transform(jp);
-    accum_rot*=q;
+    accum_rot *=q;
     transform_matrix=Argon::IdentityMatrix<float>()*Argon::TranslateMatrix(jp)*Argon::RotateMatrix(q)*transform_matrix;
 
     //Create the transformation matrix for the camera
