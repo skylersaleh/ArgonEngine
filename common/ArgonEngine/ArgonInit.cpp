@@ -28,6 +28,10 @@
 #include <unistd.h>
 #include <pwd.h>
 #endif
+#ifdef PLATFORM_WINDOWS
+#define WIN32_LEAN_AND_MEAN 1
+#include <windows.h>
+#endif
 #ifdef USE_RTAUDIO
 #include <RtAudio/RtAudio.h>
 #endif
@@ -83,6 +87,15 @@ namespace Argon{
 #ifdef PLATFORM_MAC
         doc_dir = home+"/Documents";
         pref_dir = home+"/Library/Application Support/"+organization_name+"/"+app_name;
+#endif
+#ifdef PLATFORM_WINDOWS
+        char output[MAX_PATH];
+        output[MAX_PATH-1] = 0;
+        SHGetFolderPathA(NULL,CSIDL_PERSONAL,NULL,CSIDL_FLAG_NO_ALIAS,output);
+        doc_dir = output;
+
+        SHGetFolderPathA(NULL,CSIDL_LOCAL_APPDATA,NULL,CSIDL_FLAG_NO_ALIAS,output);
+        pref_dir = output;
 #endif
         std::cout<< "Save files are stored in "<<doc_dir<<"\n";
 

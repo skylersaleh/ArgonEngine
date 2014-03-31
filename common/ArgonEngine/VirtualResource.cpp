@@ -21,6 +21,10 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #endif
+#ifdef PLATFORM_WINDOWS
+#define WIN32_LEAN_AND_MEAN 1
+#include <windows.h>
+#endif
 
 namespace Argon{
 struct VirtualResourceStringSource:public VirtualResourceIMPL::Source{
@@ -500,8 +504,41 @@ struct VirtualResourceAppended:public VirtualResourceIMPL::Source{
         if(stat(path.c_str(),&file_stats)==-1)return 0;
         return file_stats.st_mtime;
 #endif
+
+#ifdef PLATFORM_WINDOWS
+        std::wstring filename;
+        filename.assign(path.begin(),path.end());
+
+        HANDLE file = CreateFile(filename.c_str(),GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
+
+        if(file == INVALID_HANDLE_VALUE)
+        {
+            std::cerr << "\n\nERROR: File \"";
+            std::cerr<< path;
+            std::cerr << "\" not found when update_id called\n\n";
+            CloseHandle(file);
+            return 0;
+        }
+
+        else
+        {
+            FILETIME time;
+
+            GetFileTime(file,NULL,NULL,&time);
+
+            CloseHandle(file);
+
+            size_t high = time.dwHighDateTime;
+            size_t low = time.dwLowDateTime;
+
+            high << sizeof time.dwHighDateTime;
+
+            return high | low;
+        }
+#endif
         return 0;
     }
+
     size_t VirtualResourceIO::write(const char* buffer, size_t buffer_size,size_t offset){
         size_t begin = offset;
         size_t end = offset+buffer_size;
