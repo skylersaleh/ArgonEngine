@@ -41,8 +41,8 @@ VectorBase<T,TComps> closest_point_on_line(const VectorBase<T, TComps>& lineA,co
         vect_type e2= v2-v0;
         vect_type s = pos-v0;
 
-        vect_type h = dir.cross(e2);
-        vect_type q = s.cross(e1);
+        vect_type h = cross(dir,e2);
+        vect_type q = cross(s,e1);
 
         const T f = 1.0/dot(e1,h);
 

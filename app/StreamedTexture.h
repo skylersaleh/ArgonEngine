@@ -24,7 +24,7 @@ struct StreamTextureTest : public Argon::Node {
         texture = "virtual://stream1/render_image1.png{w=h=100; f=RGBA8; mip=0; filter=0;}";
         image = texture.get_data<Argon::VirtualResourceImage*>();
         sprite.texture=texture;
-        sprite.dimensions.setConstant(20);
+        sprite.dimensions.set_all(20);
         xr=xg=xb=64*4;
         for(int i=0;i<resolution*resolution*4;i+=4){
             image->set_pixel_color(i%resolution, i/resolution,

@@ -148,9 +148,9 @@ namespace Argon
     }
     void InstancedSprites::set_sprite(size_t index, const Vector4f& color,const Vector3f scale,const Vector3f position,const Quaternionf &rotation,Vector2f min_tex,Vector2f max_tex){
         Vector3f v0(-0.5f*scale[0],0.5f*scale[1],0.f);
-        const Vector3f v1 = rotation*v0;
+        const Vector3f v1 = rotation.transform(v0);
         v0[0]*=-1.f;
-        const Vector3f v2 = rotation*v0;
+        const Vector3f v2 = rotation.transform(v0);
 
         set_sprite(index,color,position+v1,
                    position-v2,
@@ -162,17 +162,17 @@ namespace Argon
 
     void InstancedSprites::set_transform(size_t index, Node & transform,Vector2f min_tex, Vector2f max_tex){
         if(transform.get_should_render()){
-            Matrix4f world_matrix = transform.world_matrix().matrix();
+            Matrix4f world_matrix = transform.world_matrix();
             Vector4f pos[4]= {Vector4f(-0.5,0.5,0,1),Vector4f(-0.5,-0.5,0,1),Vector4f(0.5,0.5,0,1),Vector4f(0.5,-0.5,0,1)};
             pos[0]=world_matrix*pos[0];
             pos[1]=world_matrix*pos[1];
             pos[2]=world_matrix*pos[2];
             pos[3]=world_matrix*pos[3];
 
-            set_sprite(index,transform.get_color(),(pos[0]/pos[0][3]).head<3>(),
-                    (pos[1]/pos[1][3]).head<3>(),
-                    (pos[2]/pos[2][3]).head<3>(),
-                    (pos[3]/pos[3][3]).head<3>(),min_tex,max_tex);
+            set_sprite(index,transform.get_color(),Vector3f(pos[0]/pos[0][3]),
+                    Vector3f(pos[1]/pos[1][3]),
+                    Vector3f(pos[2]/pos[2][3]),
+                    Vector3f(pos[3]/pos[3][3]),min_tex,max_tex);
         }else{
             set_sprite(index,Vector4f(0,0,0,0),Vector3f(),Vector3f(),Vector3f(),Vector3f(),min_tex,max_tex);
         }

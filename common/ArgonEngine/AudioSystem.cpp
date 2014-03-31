@@ -12,10 +12,8 @@ size_t         Listener::current_frame=0;
 void SinGenerator::render(float* buffer){
     float *be = buffer+kAudioBufferSize;
     while(buffer!=be){
-        *buffer++ += phase*volume;
+        *buffer++ += sin(phase)*volume;
         phase+=frequency*kAudioTimePerSample;
-        if(phase>1.)phase-=2.0;
-
     }
 }
 void SawGenerator::render(float * buffer){
@@ -218,12 +216,12 @@ void Listener::update(){
 
     while(curr){
 
-        Vector3f last_direction = (curr->last_position2-last_position).normalized();
-        Vector3f curr_direction = (curr->last_position-position).normalized();
+        Vector3f last_direction = normalize(curr->last_position2-last_position);
+        Vector3f curr_direction = normalize(curr->last_position-position);
 
 
-        float last_direction_scale = (direction.dot(last_direction)+1.0)*direction_factor+1.0-direction_factor;
-        float curr_direction_scale = (direction.dot(curr_direction)+1.0)*direction_factor+1.0-direction_factor;
+        float last_direction_scale = (dot(direction,last_direction)+1.0)*direction_factor+1.0-direction_factor;
+        float curr_direction_scale = (dot(direction,curr_direction)+1.0)*direction_factor+1.0-direction_factor;
         float direction_incr = (curr_direction_scale-last_direction_scale)/float(kAudioBufferSize);
 
         float previous_distance = distance(curr->last_position2,last_position);

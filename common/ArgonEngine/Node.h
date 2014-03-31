@@ -30,11 +30,11 @@ struct Node: public ReflectionBase{
     Node* parent=NULL;
     StringIntern name;
     Vector3f position=Vector3f(0,0,0);
-    Quaternionf rotation=Quaternionf::Identity();
+    Quaternionf rotation=Quaternionf();
     Vector3f anchor=Vector3f(0,0,0);
     Vector3f scale=Vector3f(1,1,1);
     Vector3f dimensions=Vector3f(1,1,1);
-    Array4f color=Vector4f(1,1,1,1);
+    Vector4f color=Vector4f(1,1,1,1);
 
     bool should_render=true;
     int layer = 0;
@@ -63,25 +63,25 @@ struct Node: public ReflectionBase{
     virtual void draw(){return;}
 
     bool get_should_render(){return should_render? parent? parent->get_should_render() : true :false;}
-    Array4f get_color(){return parent? color*parent->get_color():color;}
+    Vector4f get_color(){return parent? color*parent->get_color():color;}
     int get_layer(){return parent?parent->get_layer()+layer:layer;}
     Node()=default;
     Node(const Node &t):Node(){operator=(t);}
     Node & operator=(const Node &t);
 
     virtual void visit(Visitor &v) override;
-    Affine3f world_matrix();
+    Matrix4f world_matrix();
 
-    Affine3f object_matrix();
+    Matrix4f object_matrix();
     Matrix4f get_camera_projection();
     Matrix4f get_camera_view();
     Matrix4f get_camera_inverse_view();
     Matrix4f projection_matrix();
     Matrix4f view_matrix();
 
-    Affine3f object_matrix_inverse();
+    Matrix4f object_matrix_inverse();
 
-    Affine3f world_matrix_inverse();
+    Matrix4f world_matrix_inverse();
     Matrix4f view_matrix_inverse();
 
     Matrix4f object_normal_matrix();

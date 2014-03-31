@@ -53,11 +53,11 @@ private:
     Argon::Label test_name;
     Argon::Vector3f translate;
     Argon::Quaternionf accum_rot;
-    Affine3f transform_matrix;
+    Argon::Matrix4f transform_matrix;
     Argon::VirtualResource font;
 public:
     ArgonAppFlowControl(){
-        transform_matrix=Translation3f(Argon::Vector3f(0,0,-10));
+        transform_matrix=Argon::IdentityMatrix<float>()* Argon::TranslateMatrix(Argon::Vector3f(0,0,-10));
         left_playback = std::make_shared<Argon::Listener>();
         right_playback = std::make_shared<Argon::Listener>();
         opus = std::make_shared<Argon::OggNode>();

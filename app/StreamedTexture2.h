@@ -35,7 +35,7 @@ struct StreamTextureTest2 : public Argon::Node {
 
         sprite.texture=texture;
 
-        sprite.dimensions=Vector3f(20,20.,20.);
+        sprite.dimensions.set(20,20.,20.);
         positionr=positiong=positionb =0;
         velocityr=velocityg=velocityb=0;
         xr=xg=xb=64*4;

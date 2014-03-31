@@ -36,11 +36,11 @@ struct StreamVertexArrayTest : public Argon::Node {
         }
         array->update_id++;
         sprite.vertex_array = array;
-        sprite.dimensions=Vector3f(10,10.,10.);
+        sprite.dimensions.set(10,10.,10.);
         sprite.parent=this;
     }
     std::shared_ptr<Node> animate(float time){
-        color.head<3>()=Argon::hsv_to_rgb(Argon::Vector3f(total_time*0.2,1,1));
+        color=Argon::hsv_to_rgb(Argon::Vector3f(total_time*0.2,1,1));
         total_time+=time*2.;
         Argon::VertexIterator pos_it = array->begin("position");
         for(int i=0;i<51;++i){

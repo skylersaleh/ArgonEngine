@@ -56,17 +56,17 @@ void ArgonAppFlowControl::animate(){
     //Create an animated quaternion to rotate the camera and look snazzy.
     static float x_old=0;
     static float y_old=0;
-    Argon::Quaternionf q=Quaternionf::Identity();
-    Vector3f view_delta = Vector3f(input[Argon::kInputIDMouseY].value*4.-y_old,
+    Argon::Quaternionf q;
+    Argon::Vector3f view_delta = Argon::Vector3f(input[Argon::kInputIDMouseY].value*4.-y_old,
             input[Argon::kInputIDMouseX].value*-4.-x_old,
             0);
 
-    Vector3f view_delta2 = Vector3f(input[Argon::kInputIDJoyY].integral*4.,
+    Argon::Vector3f view_delta2 = Argon::Vector3f(input[Argon::kInputIDJoyY].integral*4.,
             input[Argon::kInputIDJoyX].integral*4.,
             (input[Argon::kInputIDJoyButton10].integral-input[Argon::kInputIDJoyButton11].integral)*3.);
     view_delta+=view_delta2;
-    if(view_delta.norm()>0.01)
-    q= AngleAxisf(view_delta.norm(),view_delta.normalized());
+    if(length(view_delta)>0.01)
+    q.set_angle_axis(length(view_delta),normalize(view_delta));
     Argon::Vector3f jp(input['a'].integral*15-input['t'].integral*15,
             input['1'].integral*15-
             input['2'].integral*15,
@@ -96,14 +96,14 @@ void ArgonAppFlowControl::animate(){
     input[Argon::kInputIDJoyButton8].integral=
     input[Argon::kInputIDJoyButton9].integral=0;
     //Argon::Vector3f translate;
-    translate+=q*jp;
+    translate+=q.transform(jp);
     accum_rot*=q;
-    transform_matrix=Translation3f(jp)*q*transform_matrix;
+    transform_matrix=Argon::IdentityMatrix<float>()*Argon::TranslateMatrix(jp)*Argon::RotateMatrix(q)*transform_matrix;
 
     //Create the transformation matrix for the camera
     camera.projection_matrix =Argon::PerspectiveMatrix<float>(20, 1./Argon::Screen::ratio(), 1, 100);
 
-    camera.matrix =(transform_matrix).matrix();
+    camera.matrix =(transform_matrix);
 
     //camera.matrix = ident.matrix();
     //camera.projection_matrix = ident.matrix();
@@ -111,7 +111,7 @@ void ArgonAppFlowControl::animate(){
     camera.become_main_camera();
     ui_camera.become_main_camera2D();
     ui_camera.projection_matrix =Argon::OrthoMatrix<float>(10./Argon::Screen::ratio(), -10./Argon::Screen::ratio(), 10, -10, -10, 10);
-    ui_camera.matrix =Affine3f::Identity().matrix();
+    ui_camera.matrix =Argon::Matrix4f();
 
     //Handle flow control
     if(current_node)set_node(current_node->animate(smoothed_time));

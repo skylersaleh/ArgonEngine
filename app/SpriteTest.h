@@ -29,7 +29,7 @@ struct SpriteTest : public Argon::Node {
         name="SpriteTest";
         sprite.texture="resource://test.png{f=RGBA4;}";
         sprite.material->blend =Argon::kBlendScreen;
-        sprite.dimensions=Vector3f(1,1.,0.);
+        sprite.dimensions.set(1,1.,0.);
         int particles =100000;
         sprites.set_sprites(particles);
 
@@ -37,19 +37,19 @@ struct SpriteTest : public Argon::Node {
 
         system.particles.resize(particles);
         system.variance.color=Argon::kBlackColor;
-        system.variance.color_v=Vector4f(0,0,0,0);
-        system.variance.rotation_axis.setConstant(10);
+        system.variance.color_v.set(0,0,0,0);
+        system.variance.rotation_axis.set_all(10);
         system.variance.angular_velocity=2.5;
-        system.variance.position=Vector3f(0,0,0);
+        system.variance.position.set_all(0);
         system.variance.scale_v=0.001;
         system.emission_rate = particles/3.;
 
         system.initial.scale=0.001;
-        system.initial.color.setConstant(1);
-        system.initial.velocity=Vector3f(1.5,1.5,-10);
-        system.initial.position=Vector3f(0.,0.,10);
+        system.initial.color.set_all(1);
+        system.initial.velocity.set(1.5,1.5,-10);
+        system.initial.position.set(0.,0.,10);
 
-        system.variance.velocity.setConstant(5);
+        system.variance.velocity.set_all(5);
 
 
     }
@@ -58,13 +58,11 @@ struct SpriteTest : public Argon::Node {
         system.animate(dt*0.1);
 
         for(auto& p :system.particles){
-
-            sprites.set_sprite(i++,p.color,Argon::Vector3f(p.scale,p.scale,p.scale),p.position,Argon::Quaternionf(AngleAxisf(p.angle,p.rotation_axis)));
+            Argon::Quaternionf q;
+            q.set_angle_axis(p.angle,p.rotation_axis);
+            sprites.set_sprite(i++,p.color,Argon::Vector3f(p.scale,p.scale,p.scale),p.position,q);
         }
 
-        sprite.rotation=Quaternionf(AngleAxisf(0,Vector3f::UnitX())*
-                AngleAxisf(total_time,Vector3f::UnitY())*
-                AngleAxisf(total_time*0.2,Vector3f::UnitZ()));
         return input[' '].value?std::make_shared<StreamTextureTest>():nullptr;
     }
 

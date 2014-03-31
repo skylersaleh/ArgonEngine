@@ -102,7 +102,7 @@ VertexAttribPair VertexArray::get_attribute(const StringIntern&s)
 Matrix4f Camera::inverse(){
     Matrix4f i;
     Matrix4f m = projection_matrix*matrix;
-    i=m.inverse();
+    m.inverse(i);
     return i;
 }
 
@@ -157,7 +157,7 @@ Frustrum::collision_mapping Frustrum::test_cube(const BoundingCube &c)const{
 }
 
 void Renderable::update_transform(){
-    last_world_matrix = world_matrix().matrix();
+    last_world_matrix = world_matrix();
     last_normal_matrix = world_normal_matrix();
     last_color = get_color();
     if(get_should_render()){

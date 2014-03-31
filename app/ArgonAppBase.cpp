@@ -10,8 +10,7 @@ ArgonAppBase::ArgonAppBase(){
     //model.enable_bounds_renderering_recursive(Argon::kBlueColor);
     light=model.spawned_nodes["Lamp.001"];
     light->parent=this;
-    auto m =  (Eigen::AngleAxisf(1.507079,Vector3f(1,0,0))* Eigen::AngleAxisf(1.507079,Vector3f(0,1,0))).matrix();
-    std::cout<<m<<std::endl;
+
     //model.get_file().write("user://snake.ahf");
 
 

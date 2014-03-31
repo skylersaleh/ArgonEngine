@@ -13,7 +13,7 @@ struct RayTracingTest : public Argon::Node {
     RayTracingTest(){
         name="Raytracing Test";
         sprite.set_shader("shader://raytracer.shd");
-        sprite.dimensions=Vector3f(20,20.,0.);
+        sprite.dimensions.set(20,20.,0.);
 
     }
     std::shared_ptr<Node> animate(float time){
