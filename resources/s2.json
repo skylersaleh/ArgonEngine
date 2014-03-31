@@ -1,0 +1,85 @@
+{
+    "VertexArray" :
+    {
+        "attributes" :
+        {
+            "position": 2,
+            "texture": 2,
+        },
+        "vertices" : [],
+        "mode" : "triangles",
+        "faces" : [],
+        "updates frequently" : 0
+    }
+    "Node" :
+    {
+        "anchor" : [ 0.0, 0.0, 0.0 ],
+        "bounds" :
+        {
+            "origin" : [ -0.50, -0.50, 0.0 ],
+            "size" : [ 1.0, 1.0, 0.0 ]
+        },
+        "color" : [ 1.0, 1.0, 1.0, 1.0 ],
+        "dimensions" : [ 1.0, 1.0, 0.0 ],
+        "layer" : 0,
+        "position" : [ 0.0, 0.0, 0.0 ],
+        "rotation" : [ 0.0, 0.0, 0.0, 1.0 ],
+        "scale" : [ 1.0, 1.0, 1.0 ],
+        "should_render" : 1
+    },
+    "Material" :
+    {
+        "blend" : "none",
+        "color" : [ 0.0, 0.0, 0.0, 0.0 ],
+        "name" : "DefaultMaterial",
+        "render_flags" : 255,
+        "shader" : "shader://fallback.shd",
+        "textures" : {}
+    }
+    "Renderable" :
+    {
+        "inherit":["Node"],
+        "cull_face" : "back-ccw",
+        "end_vertex" : -1,
+        "render_flags" : 253,
+        "tag" : "Unnamed Rendera",
+        "color":[1,1,1,1],
+        "matrix":[
+            1,0,0,0,
+            0,1,0,0,
+            0,0,1,0,
+            0,0,0,1
+        ],
+        "normal_matrix":[
+            1,0,0,0,
+            0,1,0,0,
+            0,0,1,0,
+            0,0,0,1
+        ],
+        "vertex_array":{"inherit":"VertexArray"}
+    },
+    "Sprite" :
+    {
+        "inherit": ["Renderable"],
+        "material": {
+            "shader": "shader://sprite-shader.shd"
+        },
+        "texture":"resource://test.png",
+        "vertex_array":{
+            "attributes":{
+                "position":2,
+                "texture" :2,
+            },
+            "indices":[0,1,2,3],
+            "vertices":[
+                //Px,  Py,  Tx,  Ty
+                -0.5,-0.5,0,1,
+                -0.5, 0.5,0,0,
+                 0.5,-0.5,1,1,
+                 0.5, 0.5,1,0
+            ],
+            "mode":"tri-strip"
+        }
+    }
+
+}

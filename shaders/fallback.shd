@@ -1,0 +1,51 @@
+//
+//  Shader.vsh
+//  NeonRush
+//
+//  Created by Skyler Saleh on 4/23/12.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+uniform mediump vec4 specular;
+uniform mediump vec4 color;
+varying mediump vec3 ambient;
+varying mediump vec3 normal;
+
+varying mediump vec4 ecPos;
+
+
+uniform mat4 view_normal;
+
+#ifdef VERTEX_SHADER
+attribute mediump vec3 PositionAttribute;
+attribute mediump vec3 NormalAttribute;
+void main()
+{
+    ecPos =matrix * vec4(PositionAttribute,1.);
+    // Compute the light direction
+    gl_Position=projection_matrix*(view_matrix*ecPos);
+#ifndef DEPTH_ONLY
+    ambient = vec3(0.2,0.1,0.05)*color.xyz;
+    normal=(NormalAttribute*mat3(normal_matrix));
+
+#endif
+}
+#endif
+#ifdef FRAGMENT_SHADER
+void main()
+{
+
+#ifndef DEPTH_ONLY
+    vec3 pos = ecPos.xyz/ecPos.w;
+    const mediump vec4 specular_exponent= vec4(100);
+    mediump vec3 n =normalize(normal);
+    mediump vec3 view = normalize(camera_pos-pos);
+    vec3 c=calculate_lighting_blinn_phong(pos,n,view,ambient,vec3(1.),color.rgb, 100. );
+   gl_FragColor = vec4(c.xyz,1.);
+   //gl_FragColor.xyz=vec3(occlusion);
+#endif
+#ifdef DEPTH_ONLY
+    gl_FragColor=vec4(color.xyz,origin.z);
+#endif
+}
+#endif

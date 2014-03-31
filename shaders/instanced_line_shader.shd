@@ -1,0 +1,29 @@
+
+uniform mediump vec4 color;
+varying mediump vec2 texVarying;
+varying mediump vec4 color_v;
+
+#ifdef VERTEX_SHADER
+
+attribute mediump vec4 ColorAttribute;
+attribute mediump vec3 PositionAttribute;
+attribute mediump vec2 TextureCoordAttribute;
+void main()
+{
+   gl_Position =projection_matrix*view_matrix*matrix*vec4(PositionAttribute,1.);
+    texVarying=TextureCoordAttribute;
+    color_v = ColorAttribute*color;
+	
+}
+#endif
+#ifdef FRAGMENT_SHADER
+uniform mediump sampler2D texture;
+void main()
+{
+#ifndef DEPTH_ONLY
+  gl_FragColor = color_v*texture2D(texture,texVarying);
+#endif
+
+  
+}
+#endif
