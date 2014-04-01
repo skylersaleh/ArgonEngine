@@ -198,7 +198,10 @@ namespace Argon{
         float PCM_data[4096];
         bool loop;
         void init_opus(VirtualResource path){
-            if(!path.get_source<VirtualResourceIMPL::Source*>())return;
+            if(!path.get_source<VirtualResourceIMPL::Source*>()){
+                std::cout <<"Could not fing OGG file: "<<path.get_path_string()<<std::endl;
+                return;
+            }
 
             OggFileData * data = new OggFileData;
             data->offset =0;
@@ -282,11 +285,11 @@ namespace Argon{
         /// Controls how directional the listener.
         float direction_factor;
         /// The position of the listener.
-        Vector3f position;
+        Vector3f position=Vector3f(0,0,0);
         /// The last position of the listener, updated automatically.
-        Vector3f last_position;
+        Vector3f last_position=Vector3f(0,0,0);
         /// The direction the listener is facing.
-        Vector3f direction;
+        Vector3f direction=Vector3f(0,0,0);
         size_t last_frame;
         float low_pass=0;
 
@@ -296,7 +299,7 @@ namespace Argon{
             if(distance_squared<0.25)distance_squared=0.25;
             // http://www.sengpielaudio.com/calculator-soundpower.htm
             const float pi4 = 3.14159/4.;
-            return 1.0f/(pi4*distance_squared)*volume;
+            return 1.0f/(pi4*distance_squared+0.00001)*volume;
         }
         float intensity_at_distance(float distance){return intensity_at_distance_squared(distance*distance);}
         float sample_delay_for_distance(float dist){

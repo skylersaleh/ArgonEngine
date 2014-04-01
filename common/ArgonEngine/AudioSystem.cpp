@@ -12,7 +12,7 @@ size_t         Listener::current_frame=0;
 void SinGenerator::render(float* buffer){
     float *be = buffer+kAudioBufferSize;
     while(buffer!=be){
-        *buffer++ += sin(phase)*volume;
+        *buffer++ += sin(phase*2*3.14159)*volume;
         phase+=frequency*kAudioTimePerSample;
     }
 }
@@ -186,6 +186,7 @@ void AudioSource3D::update_if_needed(size_t current_frame){
         last_frame=current_frame;
         for(size_t i = 0;i<kAudioBufferSize;++i)audio_data[i]=0;
         input->render(audio_data);
+        std::cout<<audio_data[0]<<std::endl;
     }
 }
 void AudioSource3D::finalize_data(){

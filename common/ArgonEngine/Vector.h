@@ -320,7 +320,9 @@ namespace Argon {
     }
     //! Returns a vector of unit length that is in the same direction as vector a.
     template<typename T, size_t TSize> VectorBase<T,TSize> normalize(const VectorBase<T,TSize> & a){
-        return a/length<T,TSize>(a);
+        T l = length<T,TSize>(a);
+        if(l>0.0001)return a/l;
+        return a;
     }
 
     const static Vector4f kRedColor(1,0,0,1);               //!< Holds a Vector representation of the color red.

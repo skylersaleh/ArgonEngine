@@ -37,6 +37,14 @@
 #endif
 #include <iostream>
 #include "AudioSystem.h"
+#ifdef PLATFORM_WINDOWS
+#define WIN32_LEAN_AND_MEAN 1
+#include <windows.h>
+#include <shlobj.h>
+#include <knownfolders.h>
+#include <objbase.h>
+
+#endif
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
@@ -399,6 +407,9 @@ namespace Argon{
         if (SDL_OpenAudio(&want, &have) < 0) {
             printf("Failed to open audio: %s\n", SDL_GetError());
         }
+        std::cout<<"Audio Sample Rate: "<<have.freq<<"\n";
+        std::cout<<"Audio Channels: "<<int(have.channels)<<"\n";
+
         SDL_PauseAudio(0);
     }
     void initialize_engine(std::string organization_name, std::string app_name){

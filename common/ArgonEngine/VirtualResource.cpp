@@ -508,7 +508,6 @@ struct VirtualResourceAppended:public VirtualResourceIMPL::Source{
 #ifdef PLATFORM_WINDOWS
         std::wstring filename;
         filename.assign(path.begin(),path.end());
-
         HANDLE file = CreateFile(filename.c_str(),GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
 
         if(file == INVALID_HANDLE_VALUE)
@@ -657,6 +656,7 @@ struct VirtualResourceAppended:public VirtualResourceIMPL::Source{
         }
         return new VirtualResourceCURL(path+pa,allow_write);
     }
+#endif
 
     void get_argument_map(const std::string &args, std::map<std::string, std::string> &arg_map){
         int state=0;
@@ -688,7 +688,6 @@ struct VirtualResourceAppended:public VirtualResourceIMPL::Source{
         }
     }
 
-#endif
 };
 
 

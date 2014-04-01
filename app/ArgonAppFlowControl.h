@@ -78,8 +78,10 @@ public:
         right_source.input=opus->right;
         peak1->input=left_playback;
         peak2->input=right_playback;
-        Argon::AudioNode::root_nodes[0]=peak2;
-        Argon::AudioNode::root_nodes[1]=peak1;
+        Argon::AudioNode::root_nodes[0]=peak1;
+        Argon::AudioNode::root_nodes[1]=peak2;
+       // Argon::AudioNode::root_nodes[0]=opus->left;
+        //Argon::AudioNode::root_nodes[1]=opus->right;
     }
     void animate();
     void set_node(std::shared_ptr<Argon::Node> node){
