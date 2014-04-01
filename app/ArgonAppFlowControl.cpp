@@ -38,7 +38,7 @@ void ArgonAppFlowControl::animate(){
 
     }
 
-    Argon::Screen::full_screen = input['f'].value;
+    Argon::Screen::full_screen = int(input['f'].distance*0.5)%2;
     fps.position[1]=-10;
     fps.position[0]=-10/Argon::Screen::ratio();
     fps.position[1]=-10+(peak1->peak);
@@ -67,14 +67,17 @@ void ArgonAppFlowControl::animate(){
     view_delta+=view_delta2;
     if(length(view_delta)>0.01)
     q.set_angle_axis(length(view_delta),normalize(view_delta));
-    Argon::Vector3f jp(input['a'].integral*15-input['t'].integral*15,
-            input['1'].integral*15-
-            input['2'].integral*15,
-            input['w'].integral*15.-input['r'].integral*15);\
+
+    static float VertScrollOld=0;
+    std::cout<<input[Argon::kInputIDMouseVertScroll].value<<std::endl;
+    Argon::Vector3f jp(0,
+                       0,
+                       input[Argon::kInputIDMouseVertScroll].value-VertScrollOld);
     Argon::Vector3f jp2(input[Argon::kInputIDJoyX2].integral*15,
             0.,
             -input[Argon::kInputIDJoyY2].integral*15);\
     jp+=jp2;
+    VertScrollOld=input[Argon::kInputIDMouseVertScroll].value;
     x_old=input[Argon::kInputIDMouseX].value*-4.;
     y_old= input[Argon::kInputIDMouseY].value*4;
     input['w'].integral=

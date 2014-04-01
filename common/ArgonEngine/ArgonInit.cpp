@@ -597,9 +597,11 @@ namespace Argon{
     }
     std::map<int32_t, SDL_Joystick*> joys;
     int handle_event(void* userdata,SDL_Event* event){
+        static float mousex = 0;
+        static float mousey = 0;
         SDL_Event e=*event;
         //Handle events on queue
-        //while( SDL_PollEvent( &e ) != 0 )
+       // while( SDL_PollEvent( &e ) != 0 )
         {
             //User requests quit
             if( e.type == SDL_QUIT )
@@ -635,8 +637,8 @@ namespace Argon{
             else if (e.type==SDL_MOUSEWHEEL){
                 if(e.wheel.which!=SDL_TOUCH_MOUSEID){
 
-                    Argon::Input::push_update(kInputIDMouseHorzScroll, e.wheel.x);
-                    Argon::Input::push_update(kInputIDMouseVertScroll, e.wheel.y);
+                    Argon::Input::push_update(kInputIDMouseHorzScroll,mousex+= e.wheel.x);
+                    Argon::Input::push_update(kInputIDMouseVertScroll, mousey+=e.wheel.y);
                 }
             }
         }
