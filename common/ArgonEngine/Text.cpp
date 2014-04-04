@@ -18,12 +18,14 @@ Font::Font():has_loaded(false){
 }
 
 void Font::get_font_size_ratio(float &w_r, float & h_r){
+    if(has_loaded==false)return;
         int ascent, descent,linegap;
         stbtt_GetFontVMetrics(&*font, &ascent, &descent, &linegap);
         w_r=1./float(ascent-descent);
         h_r=1.;
     }
     void Font::get_glyph_size_ratio(int glyph, float &w_r, float & h_r){
+        if(has_loaded==false)return;
         int ix,iy,ix2,iy2;
         stbtt_GetCodepointBitmapBox(&*font, glyph, 1, 1, &ix, &iy, &ix2, &iy2);
         int ascent, descent,linegap;
@@ -33,6 +35,8 @@ void Font::get_font_size_ratio(float &w_r, float & h_r){
     }
 
     void Font::get_glyph_size(int glyph, Glyph &g){
+        if(has_loaded==false)return;
+
         int ix,iy,ix2,iy2;
         stbtt_GetCodepointBitmapBox(&*font, glyph, 1, 1, &ix, &iy, &ix2, &iy2);
         int ascent, descent,linegap;
@@ -45,6 +49,8 @@ void Font::get_font_size_ratio(float &w_r, float & h_r){
     }
 
     float Font::get_advance(int last_glyph,int glyph){
+        if(has_loaded==false)return 0;
+
         int advance =0;
         int left_bearing=0;
         float scale = stbtt_ScaleForPixelHeight(&*font, 1);
@@ -56,6 +62,7 @@ void Font::get_font_size_ratio(float &w_r, float & h_r){
         return f*scale;;
     }
     void Font::get_glyph_bitmap(int glyph, uint8_t* d, int w, int h,int border){
+        if(has_loaded==false)return;
         int ix,iy,ix2,iy2;
         stbtt_GetCodepointBitmapBox(&*font, glyph, 1, 1, &ix, &iy, &ix2, &iy2);
         float s1 = float(w-border*2)/float(ix2-ix);
@@ -65,6 +72,10 @@ void Font::get_font_size_ratio(float &w_r, float & h_r){
     };
 
     bool Font::reload(Argon::VirtualResourceIMPL::Source* s){
+        if(s->size()==0){
+            std::cout<<"Error: Font Resource is empty\n";
+            return false;
+        }
         if(uint8_t*d =s->get_pointer())stbtt_InitFont(&*font, (const unsigned char*)d, 0);
         else{
 

@@ -239,11 +239,15 @@ struct VirtualResourceAppended:public VirtualResourceIMPL::Source{
         }
 
         VirtualResourceIMPL::Source *sor = all_sources()[s2];
-        if(sor)sor=sor->create_source(path,args);
+        if(sor){
+            sor=sor->create_source(path,args);
+        }else std::cout<<"Warning no source handler found for source: "<<s2<<" in path: "<<s<<"\n";
+
 
         p_node->set_source(sor, reload);
     }
     void VirtualResource::initialize(){
+        VirtualResource::all_sources()["virtual:"]=
         VirtualResource::all_sources()["string:"]=new VirtualResourceStringSource("");
         VirtualResource::all_sources()["append:"]=new VirtualResourceAppended("");
         VirtualResource::all_sources()["file:"]=new VirtualResourceIO("/",true);

@@ -69,7 +69,6 @@ void ArgonAppFlowControl::animate(){
     q.set_angle_axis(length(view_delta),normalize(view_delta));
 
     static float VertScrollOld=0;
-    std::cout<<input[Argon::kInputIDMouseVertScroll].value<<std::endl;
     Argon::Vector3f jp(0,
                        0,
                        input[Argon::kInputIDMouseVertScroll].value-VertScrollOld);
