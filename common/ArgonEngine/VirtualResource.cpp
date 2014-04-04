@@ -237,6 +237,9 @@ struct VirtualResourceAppended:public VirtualResourceIMPL::Source{
             if(s[i]=='}')depth--;
             ++i;
         }
+        for(auto &c: s2)
+            c = std::tolower(c);
+
 
         VirtualResourceIMPL::Source *sor = all_sources()[s2];
         if(sor){
@@ -272,32 +275,20 @@ struct VirtualResourceAppended:public VirtualResourceIMPL::Source{
         VirtualResource::all_sources()["scp-rw:"]=  new VirtualResourceCURL("scp:/",true);
         VirtualResource::all_sources()["ldap-rw:"]= new VirtualResourceCURL("ldap:/",true);
 #endif
-        Argon::VirtualResource::all_data()[".TTF"]=
         Argon::VirtualResource::all_data()[".ttf"]=new Argon::Font;
 
         VirtualResource::all_data()[".jpg"]=
         VirtualResource::all_data()[".jpeg"]=
-        VirtualResource::all_data()[".JPG"]=
-        VirtualResource::all_data()[".JPEG"]=
         VirtualResource::all_data()[".png"]=
-        VirtualResource::all_data()[".PNG"]=
-        VirtualResource::all_data()[".TGA"]=
         VirtualResource::all_data()[".tga"]=
         VirtualResource::all_data()[".psd"]=
-        VirtualResource::all_data()[".PSD"]=
         VirtualResource::all_data()[".gif"]=
-        VirtualResource::all_data()[".GIF"]=
-        VirtualResource::all_data()[".HDR"]=
         VirtualResource::all_data()[".hdr"]=
         VirtualResource::all_data()[".pic"]=
-        VirtualResource::all_data()[".tex"]=
-        VirtualResource::all_data()[".TEX"]=
-        VirtualResource::all_data()[".PIC"]=new VirtualResourceImage(0,0,kTextureRGB8);
-        VirtualResource::all_data()[".json"]=
-        VirtualResource::all_data()[".JSON"]= new JsonResource;
+        VirtualResource::all_data()[".tex"]=new VirtualResourceImage(0,0,kTextureRGB8);
+        VirtualResource::all_data()[".json"]= new JsonResource;
 
-        VirtualResource::all_data()[".ahf"]=
-        VirtualResource::all_data()[".AHF"]= new AHFResource;
+        VirtualResource::all_data()[".ahf"]=new AHFResource;
     {
         std::cout<< "The Virtual Resource System has "<<VirtualResource::all_sources().size()<<" available sources to load from:\n";
         size_t max=0;
@@ -358,6 +349,8 @@ struct VirtualResourceAppended:public VirtualResourceIMPL::Source{
         std::string args;
         VirtualResourceIMPL::parse_arguments(ext, args, i2, ext.size());
         std::string extension(&ext[i],i2-i);
+        for(auto &c: extension)
+            c = std::tolower(c);
         VirtualResourceIMPL::Data *dat = all_data()[extension];
         if(dat)dat=dat->clone_type(args);
         p_node->set_data(dat, reload);
@@ -486,7 +479,6 @@ struct VirtualResourceAppended:public VirtualResourceIMPL::Source{
 
     bool VirtualResourceIO::reload(){
         if(update_id()==update_id_)return true;
-        std::cout<<"Reload"<<std::endl;
 
         std::fstream str(path.c_str(),allow_write?(std::ios::in | std::ios::out | std::ios::binary): std::ios::in|std::ios::binary);
 

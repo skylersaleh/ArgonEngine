@@ -13,7 +13,7 @@
 #include "TypeInfo.h"
 #include <cmath>
 #include <iostream>
-#define USE_STACKSTRING 1
+//#define USE_STACKSTRING 1
 #define USE_STRINGINTERN 1
 namespace Argon {
     static inline bool is_whitespace(int c){return c=='\n'||c==' '||c=='\r'||c=='\t';}

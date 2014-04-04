@@ -15,7 +15,6 @@
 #include <ArgonEngine/Utility.h>
 #include "ArgonEngine/VirtualResourceImage.h"
 #include "ArgonEngine/Node.h"
-#include "ArgonEngine/Hardware.h"
 #include <iostream>
 struct stbtt_fontinfo;
 

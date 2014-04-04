@@ -400,7 +400,6 @@ namespace Argon {
 
         /// Updates the derived values for all observed input devices of this object.
         void update_values();
-
         /// Push a value update for a certain id. By using this with virtual inputs, you can abstract the
         /// control scheme from the game logic.
         static void push_update(uint32_t input_id,double value);
