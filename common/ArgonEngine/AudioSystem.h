@@ -202,6 +202,7 @@ namespace Argon{
                 std::cout <<"Could not fing OGG file: "<<path.get_path_string()<<std::endl;
                 return;
             }
+            playback_position=0;
 
             OggFileData * data = new OggFileData;
             data->offset =0;
