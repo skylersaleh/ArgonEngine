@@ -12,35 +12,56 @@
 #include "stb/stb_truetype.h"
 
 namespace Argon {
+struct TTFFont:public Font{
 
-Font::Font():has_loaded(false){
-    font=std::make_shared<stbtt_fontinfo>();
-}
+    bool has_loaded;
+    stbtt_fontinfo font;
+    std::string data;
+    TTFFont();
+    virtual void get_font_size_ratio(float &w_r, float & h_r);
+    virtual void get_glyph_size_ratio(int glyph, float &w_r, float & h_r);
 
-void Font::get_font_size_ratio(float &w_r, float & h_r){
+    virtual void get_glyph_size(int glyph, Glyph &g);
+
+    virtual float get_advance(int last_glyph,int glyph);
+    virtual void get_glyph_bitmap(int glyph, uint8_t* d, int w, int h,int border=0);
+
+    virtual bool reload(Argon::VirtualResourceIMPL::Source* s);
+
+    virtual Data* clone_type(const std::string& arguments)const;
+    virtual bool loaded(){return has_loaded;}
+    virtual bool save(Argon::VirtualResourceIMPL::Source* s){has_loaded=false;return false;}
+    virtual size_t update_id(){return 0;}
+
+};
+
+auto f = VirtualResource::all_data()[".ttf"]=new TTFFont;
+TTFFont::TTFFont():has_loaded(false){}
+
+void TTFFont::get_font_size_ratio(float &w_r, float & h_r){
     if(has_loaded==false)return;
         int ascent, descent,linegap;
-        stbtt_GetFontVMetrics(&*font, &ascent, &descent, &linegap);
+        stbtt_GetFontVMetrics(&font, &ascent, &descent, &linegap);
         w_r=1./float(ascent-descent);
         h_r=1.;
     }
-    void Font::get_glyph_size_ratio(int glyph, float &w_r, float & h_r){
+    void TTFFont::get_glyph_size_ratio(int glyph, float &w_r, float & h_r){
         if(has_loaded==false)return;
         int ix,iy,ix2,iy2;
-        stbtt_GetCodepointBitmapBox(&*font, glyph, 1, 1, &ix, &iy, &ix2, &iy2);
+        stbtt_GetCodepointBitmapBox(&font, glyph, 1, 1, &ix, &iy, &ix2, &iy2);
         int ascent, descent,linegap;
-        stbtt_GetFontVMetrics(&*font, &ascent, &descent, &linegap);
+        stbtt_GetFontVMetrics(&font, &ascent, &descent, &linegap);
         w_r=float(ix2-ix)/float(ascent-descent);
         h_r=float(iy2-iy)/float(ascent-descent);
     }
 
-    void Font::get_glyph_size(int glyph, Glyph &g){
+    void TTFFont::get_glyph_size(int glyph, Glyph &g){
         if(has_loaded==false)return;
 
         int ix,iy,ix2,iy2;
-        stbtt_GetCodepointBitmapBox(&*font, glyph, 1, 1, &ix, &iy, &ix2, &iy2);
+        stbtt_GetCodepointBitmapBox(&font, glyph, 1, 1, &ix, &iy, &ix2, &iy2);
         int ascent, descent,linegap;
-        stbtt_GetFontVMetrics(&*font, &ascent, &descent, &linegap);
+        stbtt_GetFontVMetrics(&font, &ascent, &descent, &linegap);
         float scale = 1./float(ascent-descent);
         g.xmin=ix*scale;
         g.xmax=ix2*scale;
@@ -48,48 +69,48 @@ void Font::get_font_size_ratio(float &w_r, float & h_r){
         g.ymax=(-descent-iy)*scale;
     }
 
-    float Font::get_advance(int last_glyph,int glyph){
+    float TTFFont::get_advance(int last_glyph,int glyph){
         if(has_loaded==false)return 0;
 
         int advance =0;
         int left_bearing=0;
-        float scale = stbtt_ScaleForPixelHeight(&*font, 1);
-        stbtt_GetCodepointHMetrics(&*font, last_glyph, &advance, &left_bearing);
+        float scale = stbtt_ScaleForPixelHeight(&font, 1);
+        stbtt_GetCodepointHMetrics(&font, last_glyph, &advance, &left_bearing);
         float f = advance;
         //stbtt_GetCodepointHMetrics(&font, glyph, &advance, &left_bearing);
         //f-=left_bearing;
-        f+=stbtt_GetCodepointKernAdvance(&*font, last_glyph, glyph);
+        f+=stbtt_GetCodepointKernAdvance(&font, last_glyph, glyph);
         return f*scale;;
     }
-    void Font::get_glyph_bitmap(int glyph, uint8_t* d, int w, int h,int border){
+    void TTFFont::get_glyph_bitmap(int glyph, uint8_t* d, int w, int h,int border){
         if(has_loaded==false)return;
         int ix,iy,ix2,iy2;
-        stbtt_GetCodepointBitmapBox(&*font, glyph, 1, 1, &ix, &iy, &ix2, &iy2);
+        stbtt_GetCodepointBitmapBox(&font, glyph, 1, 1, &ix, &iy, &ix2, &iy2);
         float s1 = float(w-border*2)/float(ix2-ix);
         float s2 = float(h-border*2)/float(iy2-iy);
 
-        stbtt_MakeCodepointBitmap(&*font, d+w*border+border, w-border, h-border, w, s1, s2, glyph);
+        stbtt_MakeCodepointBitmap(&font, d+w*border+border, w-border, h-border, w, s1, s2, glyph);
     };
 
-    bool Font::reload(Argon::VirtualResourceIMPL::Source* s){
+    bool TTFFont::reload(Argon::VirtualResourceIMPL::Source* s){
         if(s->size()==0){
             std::cout<<"Error: Font Resource is empty\n";
             return false;
         }
-        if(uint8_t*d =s->get_pointer())stbtt_InitFont(&*font, (const unsigned char*)d, 0);
+        if(uint8_t*d =s->get_pointer())stbtt_InitFont(&font, (const unsigned char*)d, 0);
         else{
 
         data.resize(s->size());
         s->read(&data[0], data.size(), 0);
 
-        stbtt_InitFont(&*font, (const unsigned char*)data.c_str(), 0);
+        stbtt_InitFont(&font, (const unsigned char*)data.c_str(), 0);
         }
         has_loaded=true;
         return true;
     }
 
-    VirtualResourceIMPL::Data* Font::clone_type(const std::string& arguments)const{
-        Font* f = new Font;
+    VirtualResourceIMPL::Data* TTFFont::clone_type(const std::string& arguments)const{
+        TTFFont* f = new TTFFont;
         *f=*this;
         return f;
     }

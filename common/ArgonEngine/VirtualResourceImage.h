@@ -35,7 +35,7 @@ protected:
     int height;        //!< The height of the image in pixels.
     unsigned int format;     //!< The texture format to use when creating a texture.
     Thread load_thread;
-    
+
     unsigned char* image_data;      //!< A pointer to the image data.
     static void *thread_help(void*p);
 public:
@@ -49,8 +49,10 @@ public:
     int get_width(){return width;}
     int get_height(){return height;}
     int get_format(){return format;}
+    unsigned int parse_format(std::map<std::string,std::string>&arg_map)const;
+
     virtual VirtualResourceIMPL::Data* clone_type(const std::string& arguments)const{
-        
+
         std::map<std::string,std::string> arg_map;
         arg_map["w"]=arg_map["h"]="-1";
         arg_map["f"]="RGBA8";
@@ -61,53 +63,10 @@ public:
 
         int w = string_to_number(arg_map["w"]);
         int h = string_to_number(arg_map["h"]);
-        
-        std::string & f = arg_map["f"];
-        unsigned int format =kTextureRGBA8;
-        if(f=="RGB565")format=kTextureRGB565;
-        else if(f=="RGB8")format = kTextureRGB8;
-        else if(f=="RGBF16")format=kTextureRGBF16;
-        else if(f=="RGBF32")format=kTextureRGBF32;
-        else if(f=="RGBF64")format=kTextureRGBF64;
-        
-        else if(f=="RGBA5551")format =kTextureRGBA5551;
-        else if(f=="RGBA4")format =kTextureRGBA4;
-        else if(f=="RGBA8")format =kTextureRGBA8;
-        else if(f=="RGBAF16")format =kTextureRGBAF16;
-        else if(f=="RGBAF32")format =kTextureRGBAF32;
-        else if(f=="RGBAF64")format =kTextureRGBAF64;
-        
-        else if(f=="D16")format =kTextureDepth16;
-        else if(f=="D24")format =kTextureDepth24;
-        else if(f=="D32")format =kTextureDepth32;
-        
-        else if(f=="S8")format =kTextureStencil8;
-        else if(f=="DS")format =kTextureDepthStencil;
-        else std::cout<<"Unknown tex format: "<<f<<"\n";
-
-
-
-
-        int mip = string_to_number(arg_map["mip"]);
-        int filter = string_to_number(arg_map["filter"]);
-        int filter_mip = string_to_number(arg_map["filter_mip"]);
-        int ansio = string_to_number(arg_map["ansiotropic"]);
-        int clamp = string_to_number(arg_map["clamp"]);
-        int fbo = string_to_number(arg_map["fbo"]);
-
         w=std::max(w,-1);
         h=std::max(h,-1);
-        
-        
-        if(ansio>=8)format|=kTextureAnsiotropic8x;
-        else if(ansio>=4)format|=kTextureAnsiotropic4x;
-        else if(ansio>=1)format|=kTextureAnsiotropic2x;
-        
-        if(clamp)format|=kTextureClamp;
-        if(!mip)format|=kTextureDontMipmap;
-        if(!filter)format|=kTextureDontFilterPixels;
-        if(!filter_mip)format|=kTextureDontFilterMipmap;
-        if(fbo)format|=kTextureFBO;
+        unsigned int format = parse_format(arg_map);
+
 
 
         VirtualResourceImage * im =  new VirtualResourceImage(w,h,format);
@@ -123,7 +82,7 @@ public:
         return tex_lookup_color(image_data, format, x*width+0.5, y*height+0.5, width
         , height);
     }
-    
+
     void set_sample_color(float x, float y,Vector4f c){
         tex_set_color(image_data, format,c, x*width+0.5, y*height+0.5, width
         , height);
@@ -169,51 +128,10 @@ public:
 
             int w = string_to_number(arg_map["w"]);
             int h = string_to_number(arg_map["h"]);
-
-            std::string & f = arg_map["f"];
-            unsigned int format =kTextureRGBA8;
-            if(f=="RGB565")format=kTextureRGB565;
-            else if(f=="RGB8")format = kTextureRGB8;
-            else if(f=="RGBF16")format=kTextureRGBF16;
-            else if(f=="RGBF32")format=kTextureRGBF32;
-            else if(f=="RGBF64")format=kTextureRGBF64;
-
-            else if(f=="RGBA5551")format =kTextureRGBA5551;
-            else if(f=="RGBA4")format =kTextureRGBA4;
-            else if(f=="RGBA8")format =kTextureRGBA8;
-            else if(f=="RGBAF16")format =kTextureRGBAF16;
-            else if(f=="RGBAF32")format =kTextureRGBAF32;
-            else if(f=="RGBAF64")format =kTextureRGBAF64;
-
-            else if(f=="D16")format =kTextureDepth16;
-            else if(f=="D24")format =kTextureDepth24;
-            else if(f=="D32")format =kTextureDepth32;
-
-            else if(f=="S8")format =kTextureStencil8;
-            else if(f=="DS")format =kTextureDepthStencil;
-            else std::cout<<"Unknown tex format: "<<f<<"\n";
-
-            int mip = string_to_number(arg_map["mip"]);
-            int filter = string_to_number(arg_map["filter"]);
-            int filter_mip = string_to_number(arg_map["filter_mip"]);
-            int ansio = string_to_number(arg_map["ansiotropic"]);
-            int clamp = string_to_number(arg_map["clamp"]);
-            int fbo = string_to_number(arg_map["fbo"]);
-            int always_update = string_to_number(arg_map["always_update"]);
             w=std::max(w,-1);
             h=std::max(h,-1);
 
-
-            if(ansio>=8)format|=kTextureAnsiotropic8x;
-            else if(ansio>=4)format|=kTextureAnsiotropic4x;
-            else if(ansio>=1)format|=kTextureAnsiotropic2x;
-
-            if(clamp)format|=kTextureClamp;
-            if(!mip)format|=kTextureDontMipmap;
-            if(!filter)format|=kTextureDontFilterPixels;
-            if(!filter_mip)format|=kTextureDontFilterMipmap;
-            if(fbo)format|=kTextureFBO;
-
+            unsigned int format = parse_format(arg_map);
 
             RandomTexture * im =  new RandomTexture(w,h,format,always_update);
             if(w!=-1&&h!=-1)im->create(w, h,format);

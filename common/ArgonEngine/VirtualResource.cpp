@@ -275,7 +275,6 @@ struct VirtualResourceAppended:public VirtualResourceIMPL::Source{
         VirtualResource::all_sources()["scp-rw:"]=  new VirtualResourceCURL("scp:/",true);
         VirtualResource::all_sources()["ldap-rw:"]= new VirtualResourceCURL("ldap:/",true);
 #endif
-        Argon::VirtualResource::all_data()[".ttf"]=new Argon::Font;
 
         VirtualResource::all_data()[".jpg"]=
         VirtualResource::all_data()[".jpeg"]=

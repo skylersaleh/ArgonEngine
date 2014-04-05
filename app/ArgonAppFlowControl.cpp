@@ -41,9 +41,9 @@ void ArgonAppFlowControl::animate(){
     Argon::Screen::full_screen = int(input['f'].distance*0.5)%2;
     fps.position[1]=-10;
     fps.position[0]=-10/Argon::Screen::ratio();
-    fps.position[1]=-10+(peak1->peak);
+    fps.position[1]=-10;
 
-    test_name.position[1]=peak2->peak;
+    test_name.position[1]=-10;
     test_name.position[0]=10/Argon::Screen::ratio();
     left_source.position[0]=right_source.position[0]=input[Argon::kInputIDMouseX].value*3.0;
     left_source.position[1]=right_source.position[1]=input[Argon::kInputIDMouseY].value*3.0;

@@ -11,12 +11,10 @@
 
 #ifndef __ArgonTest__Text__
 #define __ArgonTest__Text__
-#include <memory>
 #include <ArgonEngine/Utility.h>
 #include "ArgonEngine/VirtualResourceImage.h"
 #include "ArgonEngine/Node.h"
 #include <iostream>
-struct stbtt_fontinfo;
 
 namespace Argon{
     enum LineStyle{
@@ -24,6 +22,8 @@ namespace Argon{
         kLineCenter,
         kLineRight,
     };
+
+
     const int kGlyphTextureSize = 1024;
 
     const int kGlyphWidth = 64;
@@ -73,28 +73,7 @@ namespace Argon{
         Argon::VirtualResource font;
     };
 
-    struct Font:public Argon::VirtualResourceIMPL::Data{
 
-        bool has_loaded;
-        std::shared_ptr<stbtt_fontinfo>font;
-        std::string data;
-        Font();
-        virtual void get_font_size_ratio(float &w_r, float & h_r);
-        virtual void get_glyph_size_ratio(int glyph, float &w_r, float & h_r);
-
-        virtual void get_glyph_size(int glyph, Glyph &g);
-
-        virtual float get_advance(int last_glyph,int glyph);
-        virtual void get_glyph_bitmap(int glyph, uint8_t* d, int w, int h,int border=0);
-
-        virtual bool reload(Argon::VirtualResourceIMPL::Source* s);
-
-        virtual Data* clone_type(const std::string& arguments)const;
-        virtual bool loaded(){return has_loaded;}
-        virtual bool save(Argon::VirtualResourceIMPL::Source* s){has_loaded=false;return false;}
-        virtual size_t update_id(){return 0;}
-
-    };
     struct GlyphCache{
         Argon::VirtualResource texture;
         Argon::VirtualResourceImage *image;
@@ -119,6 +98,24 @@ namespace Argon{
         unsigned char interpolate(float x, float y, unsigned char *bu);
         void build_distance_field(uint8_t * bu,int pos);
         Glyph* get_glyph(Argon::VirtualResource font, int glyph);
+    };
+    struct Font:public Argon::VirtualResourceIMPL::Data{
+        Font(){}
+        virtual void get_font_size_ratio(float &w_r, float & h_r)=0;
+        virtual void get_glyph_size_ratio(int glyph, float &w_r, float & h_r)=0;
+
+        virtual void get_glyph_size(int glyph, Glyph &g)=0;
+
+        virtual float get_advance(int last_glyph,int glyph)=0;
+        virtual void get_glyph_bitmap(int glyph, uint8_t* d, int w, int h,int border=0)=0;
+
+        virtual bool reload(Argon::VirtualResourceIMPL::Source* s)=0;
+
+        virtual Data* clone_type(const std::string& arguments)const=0;
+        virtual bool loaded()=0;
+        virtual bool save(Argon::VirtualResourceIMPL::Source* s){return false;}
+        virtual size_t update_id(){return 0;}
+
     };
 
     struct Label: public Renderable{

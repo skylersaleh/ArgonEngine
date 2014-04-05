@@ -109,7 +109,54 @@ namespace Argon{
         return NULL;
 
     }
+    unsigned int VirtualResourceImage::parse_format( std::map<std::string,std::string>&arg_map)const{
+        std::string & f = arg_map["f"];
+        unsigned int format =kTextureRGBA8;
+        if(f=="RGB565")format=kTextureRGB565;
+        else if(f=="RGB8")format = kTextureRGB8;
+        else if(f=="RGBF16")format=kTextureRGBF16;
+        else if(f=="RGBF32")format=kTextureRGBF32;
+        else if(f=="RGBF64")format=kTextureRGBF64;
 
+        else if(f=="RGBA5551")format =kTextureRGBA5551;
+        else if(f=="RGBA4")format =kTextureRGBA4;
+        else if(f=="RGBA8")format =kTextureRGBA8;
+        else if(f=="RGBAF16")format =kTextureRGBAF16;
+        else if(f=="RGBAF32")format =kTextureRGBAF32;
+        else if(f=="RGBAF64")format =kTextureRGBAF64;
+
+        else if(f=="D16")format =kTextureDepth16;
+        else if(f=="D24")format =kTextureDepth24;
+        else if(f=="D32")format =kTextureDepth32;
+
+        else if(f=="S8")format =kTextureStencil8;
+        else if(f=="DS")format =kTextureDepthStencil;
+        else std::cout<<"Unknown tex format: "<<f<<"\n";
+
+
+
+
+        int mip = string_to_number(arg_map["mip"]);
+        int filter = string_to_number(arg_map["filter"]);
+        int filter_mip = string_to_number(arg_map["filter_mip"]);
+        int ansio = string_to_number(arg_map["ansiotropic"]);
+        int clamp = string_to_number(arg_map["clamp"]);
+        int fbo = string_to_number(arg_map["fbo"]);
+
+
+
+
+        if(ansio>=8)format|=kTextureAnsiotropic8x;
+        else if(ansio>=4)format|=kTextureAnsiotropic4x;
+        else if(ansio>=1)format|=kTextureAnsiotropic2x;
+
+        if(clamp)format|=kTextureClamp;
+        if(!mip)format|=kTextureDontMipmap;
+        if(!filter)format|=kTextureDontFilterPixels;
+        if(!filter_mip)format|=kTextureDontFilterMipmap;
+        if(fbo)format|=kTextureFBO;
+        return format;
+    }
     bool VirtualResourceImage::reload(VirtualResourceIMPL::Source*source){
         if(preloading)return true;
         preloading=true;
