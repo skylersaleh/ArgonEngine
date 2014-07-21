@@ -5,6 +5,7 @@
  * @file ArgonInit.h
  * @author Skyler Saleh
  **/
+#include <string>
 #ifndef ARGON_INIT_H
 #define ARGON_INIT_H
 namespace Argon{
