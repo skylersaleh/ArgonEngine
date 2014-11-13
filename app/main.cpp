@@ -2,7 +2,7 @@
 #include "ArgonAppFlowControl.h"
 #include <ArgonEngine/ArgonInit.h>
 #include <SDL2/SDL.h>
-ArgonAppFlowControl* controller;
+std::unique_ptr<ArgonAppFlowControl>controller;
 void manual_redraw(){
     if(controller->draw())Argon::swap_buffers();
 }
@@ -16,6 +16,5 @@ int main(int argc, char** argv){
         if(controller->draw())Argon::swap_buffers();
     }
     Argon::terminate_engine();
-    delete controller;
     return 0;
 }
