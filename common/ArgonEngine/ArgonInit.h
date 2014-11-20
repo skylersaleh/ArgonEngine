@@ -9,6 +9,9 @@
 #ifndef ARGON_INIT_H
 #define ARGON_INIT_H
 namespace Argon{
+
+    static bool Run_Engine;
+
     /// Initialize the engine and HAL.
     void initialize_engine(std::string organization_name, std::string app_name);
     /// Termintate the engine, closing the program.

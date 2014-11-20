@@ -56,6 +56,7 @@
 namespace Argon{
     static void (*manual_redraw)()=NULL;
     bool run=true;
+
     Vector2f last_screen;
     Vector2f last_position;
 
@@ -366,7 +367,7 @@ namespace Argon{
         SDL_Quit();
 
 
-        exit(0);
+        Run_Engine=false;
     }
     SDL_AudioDeviceID dev;
     int audio_buffer_index=0;
@@ -471,6 +472,8 @@ namespace Argon{
         else std::cout << "Could not enable VSync.\n";
 
         SDL_SetEventFilter(handle_event, NULL);
+
+        Run_Engine = true;
 
     }
     uint32_t sdl_key_to_argon(SDL_Keycode key){
