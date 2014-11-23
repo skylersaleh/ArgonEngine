@@ -120,30 +120,30 @@ namespace Argon{
         return o;
     }
     MAKE_VISIT_IMPL(MeshFormatObjectData, {
-                             ADD_VAR(matrix);
-                             ADD_VAR(mesh);
-                             ADD_VAR(parent);
-                             ADD_VAR(materials);
-                             ADD_VAR(quaternion);
-                             ADD_VAR(scale);
-                             ADD_VAR(position);
+                             ADD_VAR_T(matrix);
+                             ADD_VAR_T(mesh);
+                             ADD_VAR_T(parent);
+                             ADD_VAR_T(materials);
+                             ADD_VAR_T(quaternion);
+                             ADD_VAR_T(scale);
+                             ADD_VAR_T(position);
                          });
     MAKE_VISIT_IMPL(MeshFormatLightData, {
-                             ADD_VAR(matrix);
-                             ADD_VAR(color);
-                             ADD_VAR(parent);
-                             ADD_VAR(type);
-                             ADD_VAR(intensity);
-                             ADD_VAR(distance);
-                             ADD_VAR(angle);
-                             ADD_VAR(softness);
+                             ADD_VAR_T(matrix);
+                             ADD_VAR_T(color);
+                             ADD_VAR_T(parent);
+                             ADD_VAR_T(type);
+                             ADD_VAR_DOUBLE(intensity);
+                             ADD_VAR_DOUBLE(distance);
+                             ADD_VAR_DOUBLE(angle);
+                             ADD_VAR_DOUBLE(softness);
                     })
     MAKE_VISIT_IMPL(MeshFormatFile, {
-                             ADD_VAR2(global_matrix,"matrix");
-                             ADD_VAR(materials);
-                             ADD_VAR(meshes);
-                             ADD_VAR(lights);
-                             ADD_VAR(objects);
+                             ADD_VAR2_T(global_matrix,"matrix");
+                             ADD_VAR_T(materials);
+                             ADD_VAR_T(meshes);
+                             ADD_VAR_T(lights);
+                             ADD_VAR_T(objects);
                          });
     MAKE_VISIT_IMPL(MeshFormatLight,{
                    ADD_BASE(Light);

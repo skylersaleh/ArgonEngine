@@ -7,6 +7,7 @@
 //  Created by Skyler Saleh on 7/13/11.
 //  Copyright 2011 Argon Software. All rights reserved.
 //
+//  Edited by Ian Wiggins on 11/23/14
 
 #include "BasicShape.h"
 #include <iostream>
@@ -120,10 +121,10 @@ namespace Argon
     }
     MAKE_VISIT_IMPL(BasicShape,{
                    ADD_BASE(Node);
-                   ADD_VAR(primitive);
+                   ADD_VAR_T(primitive);
                });
     MAKE_VISIT_IMPL(BoundsRenderer, {
-        ADD_VAR(color);
+        ADD_VAR_T(color);
     });
     MAKE_VISIT_IMPL(BoundingCubeNode,{
                    ADD_BASE(Renderable);

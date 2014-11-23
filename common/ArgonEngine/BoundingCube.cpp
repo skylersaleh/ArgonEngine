@@ -73,8 +73,8 @@ namespace Argon {
         return cube;
     } // transform
     MAKE_VISIT_IMPL(BoundingCube, {
-                       ADD_VAR(origin);
-                       ADD_VAR(size);
+                       ADD_VAR_T(origin);
+                       ADD_VAR_T(size);
 
                    });
 }

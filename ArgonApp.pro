@@ -76,7 +76,8 @@ macx {
 
 HEADERS += \
     common/ArgonEngine/Instancing.h \
-    common/ArgonEngine/Curves.h
+    common/ArgonEngine/Curves.h \
+    common/ArgonEngine/HandlePicker.h
 
 
 ############################################################################

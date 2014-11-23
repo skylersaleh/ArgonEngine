@@ -299,54 +299,54 @@ Listener::Listener(){
 }
 
 MAKE_VISIT_IMPL(SinGenerator,{
-        ADD_VAR(phase);
-        ADD_VAR(frequency);
+        ADD_VAR_DOUBLE(phase);
+        ADD_VAR_DOUBLE(frequency);
         ADD_BASE(AudioNode);
         v.finish_map();
     })
 MAKE_VISIT_IMPL(SawGenerator,{
-        ADD_VAR(phase);
-        ADD_VAR(frequency);
+        ADD_VAR_DOUBLE(phase);
+        ADD_VAR_DOUBLE(frequency);
         ADD_BASE(AudioNode);
         v.finish_map();
     })
 MAKE_VISIT_IMPL(TriangleGenerator,{
-        ADD_VAR(phase);
-        ADD_VAR(frequency);
-        ADD_VAR(direction);
+        ADD_VAR_DOUBLE(phase);
+        ADD_VAR_DOUBLE(frequency);
+        ADD_VAR_DOUBLE(direction);
         ADD_BASE(AudioNode);
         v.finish_map();
     })
 MAKE_VISIT_IMPL(Mixer,{
-               ADD_VAR(channels);
+               ADD_VAR_T(channels);
                ADD_BASE(AudioNode);
            })
 MAKE_VISIT_IMPL(PeakDetector,{
-               ADD_VAR(peak);
-               ADD_VAR(decay_coeff);
-               ADD_VAR(growth_coeff);
+               ADD_VAR_DOUBLE(peak);
+               ADD_VAR_DOUBLE(decay_coeff);
+               ADD_VAR_DOUBLE(growth_coeff);
                ADD_BASE(AudioNode);
            })
 MAKE_VISIT_IMPL(Resample,{
-               ADD_VAR(last);
-               ADD_VAR(rate);
-               ADD_VAR(sample_pos);
-               ADD_VAR(curr_pos);
+               ADD_VAR_DOUBLE(last);
+               ADD_VAR_DOUBLE(rate);
+               ADD_VAR_DOUBLE(sample_pos);
+               ADD_VAR_DOUBLE(curr_pos);
                ADD_BASE(AudioNode);
            })
 MAKE_VISIT_IMPL(AudioSource3D, {
-    ADD_VAR(position);
-    ADD_VAR(last_position);
-    ADD_VAR(last_frame);
+    ADD_VAR_T(position);
+    ADD_VAR_T(last_position);
+    ADD_VAR_LONG(last_frame);
 });
 MAKE_VISIT_IMPL(Listener,{
-               ADD_VAR(speed_of_sound);
-               ADD_VAR(attenuation_of_air);
-               ADD_VAR(direction_factor);
-               ADD_VAR(position);
-               ADD_VAR(last_position);
-               ADD_VAR(direction);
-               ADD_VAR(last_frame);
+               ADD_VAR_DOUBLE(speed_of_sound);
+               ADD_VAR_DOUBLE(attenuation_of_air);
+               ADD_VAR_DOUBLE(direction_factor);
+               ADD_VAR_T(position);
+               ADD_VAR_T(last_position);
+               ADD_VAR_T(direction);
+               ADD_VAR_LONG(last_frame);
                ADD_BASE(AudioNode);
            });
 };
