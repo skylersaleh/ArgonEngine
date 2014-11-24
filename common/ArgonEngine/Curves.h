@@ -26,7 +26,7 @@ struct Simple_Curve
         backGoal = *target;
         goal = gol;
         alpha = alph;
-        BGEnable=BGen;
+        BGEnable=BGEn;
     }
 
     bool BGEnable;

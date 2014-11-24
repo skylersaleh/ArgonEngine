@@ -1,7 +1,7 @@
 /**
  * @brief A particle system.
  * @file ParticleSystem.h
- * @author Skyler Saleh
+ * @author Skyler Saleh, Ian Wiggins
  **/
 
 #ifndef ParticleSystem_h
@@ -30,16 +30,16 @@ namespace Argon
 
 
     MAKE_TYPE_INFO_Argon(Particle, {
-        ADD_VAR(color);
-        ADD_VAR(color_v);
-        ADD_VAR(position);
-        ADD_VAR(scale);
-        ADD_VAR(scale_v);
-        ADD_VAR(velocity);
-        ADD_VAR(angle);
-        ADD_VAR(rotation_axis);
-        ADD_VAR(angular_velocity);
-        ADD_VAR(life);
+        ADD_VAR_T(color);
+        ADD_VAR_T(color_v);
+        ADD_VAR_T(position);
+        ADD_VAR_DOUBLE(scale);
+        ADD_VAR_DOUBLE(scale_v);
+        ADD_VAR_T(velocity);
+        ADD_VAR_DOUBLE(angle);
+        ADD_VAR_T(rotation_axis);
+        ADD_VAR_DOUBLE(angular_velocity);
+        ADD_VAR_DOUBLE(life);
     });
 
     struct ParticleSystem : public Node
@@ -83,11 +83,11 @@ namespace Argon
         }
         MAKE_VISIT(ParticleSystem,{
                        ADD_BASE(Node);
-                       ADD_VAR(particles);
-                       ADD_VAR(initial);
-                       ADD_VAR(variance);
-                       ADD_VAR(emission_rate);
-                       ADD_VAR(allowed_spawn);
+                       ADD_VAR_T(particles);
+                       ADD_VAR_T(initial);
+                       ADD_VAR_T(variance);
+                       ADD_VAR_DOUBLE(emission_rate);
+                       ADD_VAR_DOUBLE(allowed_spawn);
                    })
     };
 

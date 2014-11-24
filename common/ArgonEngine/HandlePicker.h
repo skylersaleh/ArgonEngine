@@ -10,84 +10,112 @@
 
 namespace Argon
 {
-template <typename T,bool keyed>
+template <typename T>
 struct Pick_Handle
 {
-    static void handle(Visitor&v, T&t)
+    static void handle(Visitor&v, T& t)
     {
         v.handle_T(t);
     }
-};
 
-template <typename T>
-struct Pick_Handle<T,true>
-{
-    static void handle(Visitor &v, T &t,const char*str)
+    static void handle(Visitor&v, T&t, const char*str)
     {
         v.handle_T(t,str);
     }
 };
 
 template <>
-struct Pick_Handle<long,false>
+struct Pick_Handle<long>
 {
     static void handle(Visitor&v, long t)
     {
         v.handle_Long(t);
     }
-};
 
-template <>
-struct Pick_Handle<long,true>
-{
-    static void handle(Visitor&v,long t,const char*str)
+    static void handle(Visitor &v, long t,const char* str)
     {
         v.handle_Long(t,str);
     }
 };
 
 template <>
-struct Pick_Handle<double,false>
+struct Pick_Handle<double>
 {
     static void handle(Visitor&v,double t)
     {
         v.handle_Double(t);
     }
-};
 
-template <>
-struct Pick_Handle<double,true>
-{
-    static void handle(Visitor&v,double t,const char*str)
+    static void handle(Visitor &v, double t,const char*str)
     {
         v.handle_Double(t,str);
     }
 };
 
-template <bool b>
-struct Pick_Handle<float,b>:public Pick_Handle<double,b>{};
+template<>
+struct Pick_Handle<double&>:public Pick_Handle<double>{};
 
-template <bool b>
-struct Pick_Handle<int,b>:public Pick_Handle<long,b>{};
+template<>
+struct Pick_Handle<float>:public Pick_Handle<double>{};
 
-template <bool b>
-struct Pick_Handle<unsigned,b>:public Pick_Handle<long,b>{};
+template<>
+struct Pick_Handle<float&>:public Pick_Handle<double>{};
 
-template <bool b>
-struct Pick_Handle<short,b>:public Pick_Handle<long,b>{};
+template<>
+struct Pick_Handle<long&>:public Pick_Handle<long>{};
 
-template <bool b>
-struct Pick_Handle<unsigned short,b>:public Pick_Handle<long,b>{};
+template<>
+struct Pick_Handle<int>:public Pick_Handle<long>{};
 
-template <bool b>
-struct Pick_Handle<unsigned long,b>:public Pick_Handle<long,b>{};
+template<>
+struct Pick_Handle<int&>:public Pick_Handle<long>{};
 
-template <typename T,bool b>
-struct Pick_Handle<T&,b>:public Pick_Handle<T,b>{};
+template<>
+struct Pick_Handle<unsigned>:public Pick_Handle<long>{};
 
-#define HANDLE_WITH_PICKER(visitor,item) Pick_Handle<decltype(item),false>::handle(visitor,item)
+template<>
+struct Pick_Handle<unsigned&>:public Pick_Handle<long>{};
 
-#define HANDLE_KEY_WITH_PICKER(visitor,item,key) Pick_Handle<decltype(item),true>::handle(visitor,item,key)
+template<>
+struct Pick_Handle<short>:public Pick_Handle<long>{};
+
+template<>
+struct Pick_Handle<short&>:public Pick_Handle<long>{};
+
+template<>
+struct Pick_Handle<unsigned short>:public Pick_Handle<long>{};
+
+template<>
+struct Pick_Handle<unsigned short&>:public Pick_Handle<long>{};
+
+template<>
+struct Pick_Handle<unsigned long>:public Pick_Handle<long>{};
+
+template<>
+struct Pick_Handle<unsigned long&>:public Pick_Handle<long>{};
+
+template<>
+struct Pick_Handle<bool>:public Pick_Handle<long>{};
+
+template<>
+struct Pick_Handle<bool&>:public Pick_Handle<long>{};
+
+template<>
+struct Pick_Handle<char>:public Pick_Handle<long>{};
+
+template<>
+struct Pick_Handle<char&>:public Pick_Handle<long>{};
+
+template<>
+struct Pick_Handle<unsigned char>:public Pick_Handle<long>{};
+
+template<>
+struct Pick_Handle<unsigned char&>:public Pick_Handle<long>{};
+
+
+#define HANDLE_WITH_PICKER(visitor,item) Pick_Handle<decltype(item)>::handle(visitor,item)
+
+#define HANDLE_KEY_WITH_PICKER(visitor,item,key) Pick_Handle<decltype(item)>::handle(visitor,item,key)
 
 }
 

@@ -79,17 +79,17 @@ namespace Argon {
         return 0;
     }
     MAKE_VISIT_IMPL(ScoreController, {
-                             ADD_VAR2(unsubmitted_achievements, "unsubmitted achievements");
-                             ADD_VAR2(unsubmitted_scores,       "unsubmitted scores");
-                             ADD_VAR(scores);
+                             ADD_VAR2_T(unsubmitted_achievements, "unsubmitted achievements");
+                             ADD_VAR2_T(unsubmitted_scores,       "unsubmitted scores");
+                             ADD_VAR_T(scores);
                          });
     MAKE_VISIT_IMPL(ScoreControllerAchievement, {
-                             ADD_VAR(achievement);
-                             ADD_VAR(percent);
+                             ADD_VAR_T(achievement);
+                             ADD_VAR_DOUBLE(percent);
                          });
     MAKE_VISIT_IMPL(ScoreControllerScore, {
-                             ADD_VAR(score);
-                             ADD_VAR2(leader_board,"leader board");
+                             ADD_VAR_DOUBLE(score);
+                             ADD_VAR2_T(leader_board,"leader board");
                          });
 
 };

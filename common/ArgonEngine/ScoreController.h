@@ -1,7 +1,7 @@
 /**
  * @brief This file contains classes for a basic high-score/achievement system.
  * @file ScoreController.h
- * @author Skyler Saleh
+ * @author Skyler Saleh, Ian Wiggins
  **/
 #ifndef ScoreController_h
 #define ScoreController_h
