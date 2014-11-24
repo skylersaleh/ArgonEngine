@@ -16,7 +16,6 @@ struct ArgonAppBase : public Argon::Node {
     Argon::MeshFormat model;
     float total_time=0;
     Argon::Input input;
-    Argon::VirtualResource light_res;
     ArgonAppBase();
 
 

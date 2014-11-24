@@ -15,8 +15,6 @@ ArgonAppBase::ArgonAppBase(){
 
 
     //light->visit(read);
-    light_res = "user://light-save.json";
-    //light->read(light_res);
 
     //light->write("user://light.json");
     //light->read("user://light.ahf");
