@@ -17,6 +17,7 @@
 #include "Reflection.h"
 #include "Text.h"
 #include <fstream>
+#include <string.h>
 #ifdef PLATFORM_UNIX
 #include <sys/types.h>
 #include <sys/stat.h>

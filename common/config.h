@@ -37,7 +37,7 @@
 #define USE_OPENGL 1
 #define EIGEN_MPL2_ONLY
 #define USE_SDL 1
-#define SDL_RENDER_DISABLED 1
+//#define SDL_RENDER_DISABLED 1
 #define GRAPHICS_DEBUG_LEVEL 0
 #define HAVE_LIBC
 #ifdef __ANDROID__

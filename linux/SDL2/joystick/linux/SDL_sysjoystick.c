@@ -42,7 +42,7 @@
 #include "SDL2/SDL_endian.h"
 #include "SDL2/joystick/SDL_sysjoystick.h"
 #include "SDL2/joystick/SDL_joystick_c.h"
-#include "SDL2/joystick/darwin/SDL_sysjoystick_c.h"
+#include "SDL2/joystick/linux/SDL_sysjoystick_c.h"
 
 /* !!! FIXME: move this somewhere else. */
 #if !SDL_EVENTS_DISABLED

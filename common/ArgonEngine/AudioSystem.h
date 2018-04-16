@@ -20,7 +20,7 @@
 namespace Argon{
 
     enum{
-        kAudioBufferSize=512,
+        kAudioBufferSize=1024,
         kAudioSampleRate=48000,
         kAudioNumberOfChannels=2,
         kAudioListenerBufferSamples = kAudioSampleRate/2
@@ -163,7 +163,7 @@ namespace Argon{
 
             return 0;
         }
-        static int ov_seek(void *stream,opus_int64 offset,int whence){
+        static int ov_seek(void *stream,ogg_int64_t offset,int whence){
             OggFileData* data = (OggFileData*)stream;
             if(whence==SEEK_SET)data->offset=offset;
             else if(whence==SEEK_CUR)data->offset+=offset;

@@ -38,6 +38,8 @@ void OpenGLES::bind_attributes(shader_data&d, std::shared_ptr<VertexArray> v)
                 break;
             }
             glVertexAttribPointer(at_it->second, it->components, t, false, v->stride, (void*)it->offset);
+            GL_CHECK("After VertexAttrib Pointer\n");
+
         }
 
         ++at_it;
@@ -59,7 +61,11 @@ void OpenGLES::draw_vertex_array(std::shared_ptr<VertexArray> array,int end_vert
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vert_d.index_buffer);
         glBindBuffer(GL_ARRAY_BUFFER, vert_d.vert_buffer);
+        GL_CHECK("After Bind Buffer Elements\n");
+
         bind_attributes(*current_shader,array);
+        GL_CHECK("After Bind Attributes Elements\n");
+
     }
 
     GLenum draw_type;
@@ -77,9 +83,7 @@ void OpenGLES::draw_vertex_array(std::shared_ptr<VertexArray> array,int end_vert
     case Argon::kDrawTriangleFan:draw_type=GL_TRIANGLE_FAN;break;
     default:draw_type=GL_TRIANGLES;break;
     }
-#if GRAPHICS_DEBUG_LEVEL >8
-    force_print(std::cout,*array)<<"\n";
-#endif
+
     if(end_vert==-1)end_vert=index_size;
 #ifndef USE_OPENGLES
     if(end_vert)
@@ -400,6 +404,7 @@ void OpenGLES::set_uniforms(Uniforms ** all_uniforms, int size){
 }
 void OpenGLES::set_shader(Argon::Renderable*state, VirtualResource& shader,Uniforms** uniforms, int size)
 {
+    GL_CHECK("Before GL USE PROGRAM");
 
     if(!state->material)return;
     shader_data &s = shaders[shader];
@@ -562,7 +567,9 @@ int OpenGLES::make_shader(VirtualResource& shader){
 
 void OpenGLES::update_resources(){
     if(!initialized){
-
+        GLuint vao;
+        glGenVertexArrays(1, &vao);
+        glBindVertexArray(vao);
         init_fbos();
         init_extensions();
         glDisable(GL_SCISSOR_TEST);

@@ -207,7 +207,7 @@ struct ReflectionBase{
         mutex().unlock();
     }
 
-    virtual void visit(Visitor& v)=0;
+    virtual void visit(Visitor& v){};
     virtual void read(VirtualResource res);
     virtual void write(VirtualResource res);
     virtual ~ReflectionBase(){}

@@ -13,7 +13,8 @@ int main(int argc, char** argv){
     controller=new ArgonAppFlowControl();
     while(run){
         run = Argon::poll_events();
-        if(controller->draw())Argon::swap_buffers();
+        controller->draw();
+        Argon::swap_buffers();
     }
     Argon::terminate_engine();
     delete controller;

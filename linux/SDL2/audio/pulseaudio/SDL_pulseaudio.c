@@ -44,7 +44,7 @@
 
 #include "SDL2/SDL_timer.h"
 #include "SDL2/SDL_audio.h"
-#include "../SDL_audiomem.h"
+#include "SDL2/audio/SDL_audiomem.h"
 #include "SDL2/audio/SDL_audio_c.h"
 #include "SDL2/audio/pulseaudio/SDL_pulseaudio.h"
 #include "SDL2/SDL_loadso.h"

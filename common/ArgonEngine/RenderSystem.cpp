@@ -14,6 +14,7 @@
 #include <iostream>
 #include "Reflection.h"
 #include "Collision.h"
+#include <string.h>
 #include "ContainerReflection.h"
 
 namespace Argon {

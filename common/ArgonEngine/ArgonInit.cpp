@@ -88,7 +88,8 @@ namespace Argon{
         doc_dir=home;
 
         std::cout<<"Home directory is "<<home<<"\n";
-        tmp_dir = getenv("TMPDIR");
+        if(getenv("TMPDIR"))
+            tmp_dir = getenv("TMPDIR");
         std::cout<<"TMP directory is "<<tmp_dir<<"\n";
 #endif
 #endif
@@ -370,7 +371,7 @@ namespace Argon{
     }
     SDL_AudioDeviceID dev;
     int audio_buffer_index=0;
-    float audio_buffer[Argon::kAudioNumberOfChannels][Argon::kAudioBufferSize];
+    static float audio_buffer[Argon::kAudioNumberOfChannels][Argon::kAudioBufferSize];
 
     void sdl_audio_callback(void *userdata, Uint8 * stream,int len){
         float *buffer = (float *) stream;
@@ -436,9 +437,9 @@ namespace Argon{
         Argon::Screen::actual_size=Vector2f(r.w,r.h);
         last_full_screen=Screen::full_screen;
         last_screen=Screen::size;
-        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,4);
-        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+        //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+        //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,1);
+        //SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
@@ -458,8 +459,8 @@ namespace Argon{
 
         int code = 0;
         if(GLEW_OK!=(code=glewInit())){
-            std::cout << glewGetErrorString(code) << "\n";
-            std::cout<<"GLEW Failed to init: "<<code<<"\n";
+            std::cout << glewGetErrorString(code) << std::endl;
+            std::cout<<"GLEW Failed to init: "<<code<<std::endl;
         };
         if(!GLEW_VERSION_2_0){
             std::cout<<"OpenGL 2.0 is required\n";
@@ -646,7 +647,7 @@ namespace Argon{
     }
     void slow_poll(){
         static int x=0;
-        if(++x%10)return;
+        //if(++x%10)return;
         if(last_title!=Screen::title){
             SDL_SetWindowTitle(win, Screen::title.c_str());
             last_title=Screen::title;
@@ -672,6 +673,7 @@ namespace Argon{
     bool poll_events(){
         SDL_Event e;
         while( SDL_PollEvent( &e ) != 0 ){
+
         }
         if(last_screen!=Screen::size){
 
